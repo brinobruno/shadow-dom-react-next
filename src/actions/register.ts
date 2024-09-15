@@ -18,30 +18,31 @@ export function handleFormSubmission(
   formData: FormData,
   showError: (id: string, message: string) => void
 ) {
-  // Check honeypot
   if (formData.get(FIELD.HONEYPOT)) {
-    console.log("Potential crawler detected. Form submission prevented.");
+    // Honeypot check: Potential crawler detected. Form submission prevented
     return;
   }
 
-  // Validate form
   let isValid = true;
 
-  // Email validation
+  const name = formData.get(FIELD.NAME) as string;
+  if (name.length < 1) {
+    showError("name-error", "Please enter your name");
+    isValid = false;
+  }
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(formData.get(FIELD.EMAIL) as string)) {
     showError("email-error", "Email address is invalid");
     isValid = false;
   }
 
-  // Password validation
   const password = formData.get(FIELD.PASSWORD) as string;
   if (password.length < 8) {
     showError("password-error", "Password is not strong enough");
     isValid = false;
   }
 
-  // Confirm password validation
   if (password !== formData.get(FIELD.CONFIRM_PASSWORD)) {
     showError("confirm-error", "Passwords do not match");
     isValid = false;

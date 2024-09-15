@@ -1,4 +1,4 @@
-import ShadowForm from "@/src/components/shadow-form";
+import ShadowForm from "@/src/components/shadow/shadow-form";
 
 export default function Home() {
   return (
